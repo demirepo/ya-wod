@@ -16,10 +16,10 @@ const getWods = async () => {
   //-------------------------------------------------------- initialization
 
   const browser = await Puppeteer.launch({
-    headless: false,
+//    headless: false,
     ignoreHTTPSErrors: true,
-    args: ["--start-maximized", "--window-size=1920x1080"],
-    devtools: true,
+//    args: ["--start-maximized", "--window-size=1920x1080"],
+//    devtools: true,
   });
   const page = await browser.newPage();
   page.setViewport({ width: 1368, height: 1080 });
@@ -107,5 +107,6 @@ const getWods = async () => {
 
 //------------------------------------------------------------------ launch
 
-schedule("0 57 18 * * *", getWods);
-console.log("Отслеживание word of the day Яндекс-переводчика начато");
+//schedule("0 00 08 * * *", getWods);
+//console.log("Отслеживание word of the day Яндекс-переводчика начато");
+getWods();
