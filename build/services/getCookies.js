@@ -26,7 +26,7 @@ export const getCookies = () => __awaiter(void 0, void 0, void 0, function* () {
         yield saveCookies(page, "cookies.json");
     }
     catch (error) {
-        console.log(chalk.whiteBright.bgRed("Ошибка загрузки страницы:\n"), error);
+        console.log(chalk.whiteBright.bgRed("Ошибка при обновлении кук:\n"), error);
     }
     browser.close();
 });

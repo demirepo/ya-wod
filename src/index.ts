@@ -1,15 +1,19 @@
-import chalk from "chalk";
 import { existsSync } from "fs";
 import fs from "fs/promises";
 import { schedule } from "node-cron";
 import Puppeteer from "puppeteer";
-import { getTimedString } from "./utils/getTimedString.js";
-import { loadCookies } from "./utils/loadCookies.js";
-import { saveCookies } from "./utils/saveCookies.js";
-import { getCookies } from "./utils/getCookies.js";
+import { loadCookies } from "./services/loadCookies.js";
+import { saveCookies } from "./services/saveCookies.js";
+import { getCookies } from "./services/getCookies.js";
+import { getIdiomDefinition } from "./services/getIdiomDef.js";
+import { logRedError } from "./utils/logRedError.js";
+
+function capitalize(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
 
 const getWods = async () => {
-  //--------------------------------------------------------- инициализация
+  //-------------------------------------------------------- initialization
 
   const browser = await Puppeteer.launch({
     headless: false,
@@ -24,62 +28,72 @@ const getWods = async () => {
   );
   await loadCookies(page, "cookies.json");
 
-  //------------------------------------------------------ парсинг слов дня
+  //---------------------------------------------- word of the day parsing
 
   try {
     await page.goto("https://translate.yandex.ru/", {
       waitUntil: ["networkidle0", "domcontentloaded"],
     });
   } catch (error) {
-    console.log(
-      chalk.whiteBright.bgRed(getTimedString("Ошибка загрузки страницы:\n")),
-      error
-    );
+    logRedError("Ошибка загрузки страницы:\n", error);
   }
 
   try {
-    // обработка капчи: получить новые куки, выход, перезапуск через pm2
+    // handling captcha: get new cookies, exit (pm2 will restart app)
     const captcha = await page.$("span.CheckboxCaptcha-LabelText");
     if (captcha) throw Error;
   } catch (error) {
-    console.log(
-      chalk.whiteBright.bgRed(getTimedString("Ошибка загрузки: капча\n")),
-      error
-    );
-    getCookies();
+    logRedError("Ошибка загрузки: капча\n", error);
+
+    await getCookies();
     process.exit();
   }
 
   let wods: Wod[] = [];
 
   try {
-    await page.waitForSelector(".dailyPhrase-cardContent", { timeout: 20000 });
+    // creating and filling wod obj
+    await page.waitForSelector(".dailyPhrase-cardContent", { timeout: 30000 });
+
     wods = await page.$$eval(".dailyPhrase-cardContent", (arr) =>
       arr.map((el) => {
+        const wod = (el.children[1] as HTMLElement).textContent?.trim() || "";
+
+        const tr = (el.children[2] as HTMLElement).textContent?.trim() || "";
+
         const date = new Date().toLocaleDateString("ru-Ru", {
           dateStyle: "short",
         });
+
         return {
-          wod: (el.children[1] as HTMLElement).innerText,
-          tr: (el.children[2] as HTMLElement).innerText,
-          tr2: (el.children[3] as HTMLElement)?.innerText,
+          wod: wod,
+          tr: tr,
+          tr2: "",
           date: date,
         };
       })
     );
   } catch (error) {
-    console.log(
-      chalk.whiteBright.bgRed(
-        getTimedString("На найдены селекторы словарных карточек:\n")
-      ),
-      error
-    );
+    logRedError("Ошибка при парсинге словарных карточек:\n", error);
   }
 
-  //----------------------------------------------------- обновление записей
+  try {
+    // getting second translation and capitalizing 'wod' and 'tr'
+    for await (let wod of wods) {
+      let tr2 = await getIdiomDefinition(wod.wod);
+      if (tr2 !== undefined) wod.tr2 = tr2;
+
+      wod.tr = capitalize(wod.tr);
+      wod.wod = capitalize(wod.wod);
+    }
+  } catch (error) {
+    logRedError("Ошибка запроса вторичного перевода:\n", error);
+  }
+
+  //----------------------------------------------------- updating log file
   if (existsSync(`./assets/wods`)) {
     const prevWodString: Buffer = await fs.readFile(`./assets/wods`);
-    let prevWod = JSON.parse(prevWodString + "");
+    let prevWod = JSON.parse(String(prevWodString));
     if (wods) {
       wods = [...prevWod, ...wods];
     }
@@ -88,13 +102,10 @@ const getWods = async () => {
 
   await saveCookies(page, "cookies.json");
 
-  // browser.close();
+  browser.close();
 };
 
-//------------------------------------------------------------------- запуск
+//------------------------------------------------------------------ launch
 
-// schedule("0 00 8 * * *", getWods);
-// console.log("Отслеживание word of the day Яндекс-переводчика начато");
-
-getWods();
-// getCookies();
+schedule("0 57 18 * * *", getWods);
+console.log("Отслеживание word of the day Яндекс-переводчика начато");
