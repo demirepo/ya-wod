@@ -1,4 +1,4 @@
-import { existsSync } from "fs";
+import { existsSync, mkdirSync } from "fs";
 import fs from "fs/promises";
 import { schedule } from "node-cron";
 import Puppeteer from "puppeteer";
@@ -16,10 +16,10 @@ const getWods = async () => {
   //-------------------------------------------------------- initialization
 
   const browser = await Puppeteer.launch({
-//    headless: false,
+    //    headless: false,
     ignoreHTTPSErrors: true,
-//    args: ["--start-maximized", "--window-size=1920x1080"],
-//    devtools: true,
+    //    args: ["--start-maximized", "--window-size=1920x1080"],
+    //    devtools: true,
   });
   const page = await browser.newPage();
   page.setViewport({ width: 1368, height: 1080 });
@@ -91,6 +91,11 @@ const getWods = async () => {
   }
 
   //----------------------------------------------------- updating log file
+
+  if (!existsSync(`./assets`)) {
+    mkdirSync(`./assets`);
+  }
+
   if (existsSync(`./assets/wods`)) {
     const prevWodString: Buffer = await fs.readFile(`./assets/wods`);
     let prevWod = JSON.parse(String(prevWodString));
@@ -109,4 +114,6 @@ const getWods = async () => {
 
 //schedule("0 00 08 * * *", getWods);
 //console.log("Отслеживание word of the day Яндекс-переводчика начато");
+// getWods();
+
 getWods();
