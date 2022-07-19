@@ -7,15 +7,17 @@
   "scripts": {
     "start:build": "tsc -w",
     "start:run": "nodemon build/index.js",
-    "start": "concurrently npm:start:*",
-    "build": "tsc"
+    "dev": "concurrently npm:start:*",
+    "build": "tsc",
+    "start": "node build/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "nodemonConfig": {
     "ignore": [
-      "assets/*"
+      "assets/*",
+      "build/*"
     ],
     "delay": 2500
   },
