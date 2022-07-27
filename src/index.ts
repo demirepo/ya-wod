@@ -112,8 +112,6 @@ const getWods = async () => {
 
 //------------------------------------------------------------------ launch
 
-//schedule("0 00 08 * * *", getWods);
+schedule("0 00 08 * * *", getWods);
 //console.log("Отслеживание word of the day Яндекс-переводчика начато");
-// getWods();
 
-getWods();
