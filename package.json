@@ -24,11 +24,14 @@
     "dotenv": "^16.0.1",
     "node-cron": "^3.0.1",
     "node-fetch": "^3.2.8",
+    "pg": "^8.7.3",
     "puppeteer": "^15.3.2"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",
     "@types/node-cron": "^3.0.2",
+    "@types/pg": "^8.6.5",
+    "@types/pg-pool": "^2.0.3",
     "chalk": "^5.0.1",
     "concurrently": "^7.2.2",
     "nodemon": "^2.0.19",
