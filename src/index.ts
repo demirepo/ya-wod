@@ -7,10 +7,11 @@ import { saveCookies } from "./services/saveCookies.js";
 import { getCookies } from "./services/getCookies.js";
 import { getIdiomDefinition } from "./services/getIdiomDef.js";
 import { logRedError } from "./utils/logRedError.js";
+import { path } from "./constants/paths.js";
 
-function capitalize(text: string) {
+const capitalize = (text: string) => {
   return text.charAt(0).toUpperCase() + text.slice(1);
-}
+};
 
 const getWods = async () => {
   //-------------------------------------------------------- initialization
@@ -92,18 +93,18 @@ const getWods = async () => {
 
   //----------------------------------------------------- updating log file
 
-  if (!existsSync(`./assets`)) {
-    mkdirSync(`./assets`);
+  if (!existsSync(path.wod)) {
+    mkdirSync(path.wod);
   }
 
-  if (existsSync(`./assets/wods`)) {
-    const prevWodString: Buffer = await fs.readFile(`./assets/wods`);
+  if (existsSync(`${path.wod}/wods`)) {
+    const prevWodString: Buffer = await fs.readFile(`${path.wod}/wods`);
     let prevWod = JSON.parse(String(prevWodString));
     if (wods) {
       wods = [...prevWod, ...wods];
     }
   }
-  await fs.writeFile(`./assets/wods`, JSON.stringify(wods, null, 2));
+  await fs.writeFile(`${path.wod}/wods`, JSON.stringify(wods, null, 2));
 
   await saveCookies(page, "cookies.json");
 
@@ -112,6 +113,6 @@ const getWods = async () => {
 
 //------------------------------------------------------------------ launch
 
-schedule("0 00 08 * * *", getWods);
-//console.log("Отслеживание word of the day Яндекс-переводчика начато");
-
+// schedule("0 8 * * *", getWods);
+// console.log("Отслеживание word of the day Яндекс-переводчика начато");
+getWods();
