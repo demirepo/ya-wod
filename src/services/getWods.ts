@@ -1,12 +1,9 @@
-import { existsSync, mkdirSync } from 'fs';
-import fs from 'fs/promises';
 import Puppeteer from 'puppeteer';
 import { loadCookies } from './loadCookies.js';
 import { saveCookies } from './saveCookies.js';
 import { getCookies } from './getCookies.js';
 import { getIdiomDefinition } from './getIdiomDef.js';
 import { logRedError } from '../utils/logRedError.js';
-import { path } from '../constants/paths.js';
 
 export const getWods = async () => {
   //-------------------------------------------------------- initialization
@@ -14,6 +11,7 @@ export const getWods = async () => {
   const browser = await Puppeteer.launch({
     //    headless: false,
     ignoreHTTPSErrors: true,
+    executablePath: 'chromium-browser',
     //    args: ["--start-maximized", "--window-size=1920x1080"],
     //    devtools: true,
   });
