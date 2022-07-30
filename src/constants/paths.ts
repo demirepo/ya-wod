@@ -1,5 +1,3 @@
 export const path = {
-  wod: "./assets",
+  wod: './assets',
 };
-
-

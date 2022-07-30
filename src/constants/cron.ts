@@ -1,1 +1,1 @@
-export const cronjob = "0 8 * * *";
+export const cronjob = '0 8 * * *';

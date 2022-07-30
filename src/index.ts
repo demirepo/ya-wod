@@ -1,7 +1,7 @@
 import { schedule } from 'node-cron';
 import { getWods } from './services/getWods.js';
 import pgdb from './services/postgres.js';
-import { cronjob as CRON_JOB} from './constants/cron.js';
+import { cronjob as CRON_JOB } from './constants/cron.js';
 
 //------------------------------------------------------------------ launch
 
@@ -18,4 +18,7 @@ const wods2db = async () => {
 };
 
 schedule(CRON_JOB, wods2db);
-console.log('Отслеживание word of the day Яндекс-переводчика начато с расписанием cron: ', CRON_JOB);
+console.log(
+  'Отслеживание word of the day Яндекс-переводчика начато с расписанием cron: ',
+  CRON_JOB
+);

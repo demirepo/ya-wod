@@ -9,11 +9,8 @@ export const getWods = async () => {
   //-------------------------------------------------------- initialization
 
   const browser = await Puppeteer.launch({
-    //    headless: false,
     ignoreHTTPSErrors: true,
-    executablePath: 'chromium-browser',
-    //    args: ["--start-maximized", "--window-size=1920x1080"],
-    //    devtools: true,
+    executablePath: '/snap/bin/chromium',
   });
   const page = await browser.newPage();
   page.setViewport({ width: 1368, height: 1080 });

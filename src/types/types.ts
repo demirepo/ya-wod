@@ -9,7 +9,7 @@ interface Translation {
   head: {
     card?: boolean;
   };
-  "en-ru": { def?: Definition[]; regular: Regular[] };
+  'en-ru': { def?: Definition[]; regular: Regular[] };
   en: { syn: any[]; deriv: any[]; ant: any[] };
 }
 

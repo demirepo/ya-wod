@@ -15,7 +15,6 @@ export async function getIdiomDefinition(text: string) {
 
     const json = (await response.json()) as Translation;
 
-    // выбираем из ответа сервера первое определение с пометкой "идиома"
     const def = json['en-ru']?.def;
 
     if (def !== undefined) {
