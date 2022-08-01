@@ -28,4 +28,9 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
-      - run: pm2 restart yawod
+      - run: pm2 restart yawod --time --watch
+        continue-on-error: true
+      - run: 'echo "$DOT_ENV" > ~/actions-runner/_work/ya-wod/ya-wod/.env'
+        shell: bash
+        env:
+          DOT_ENV: ${{secrets.DOT_ENV}}

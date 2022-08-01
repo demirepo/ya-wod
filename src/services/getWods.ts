@@ -5,12 +5,11 @@ import { getCookies } from './getCookies.js';
 import { getIdiomDefinition } from './getIdiomDef.js';
 import { logRedError } from '../utils/logRedError.js';
 
-export const getWods = async () => {
+export async function getWods() {
   //-------------------------------------------------------- initialization
-
   const browser = await Puppeteer.launch({
     ignoreHTTPSErrors: true,
-    // executablePath: '/snap/bin/chromium',
+    executablePath: '/snap/bin/chromium',
   });
   const page = await browser.newPage();
   page.setViewport({ width: 1368, height: 1080 });
@@ -20,7 +19,6 @@ export const getWods = async () => {
   await loadCookies(page, 'cookies.json');
 
   //---------------------------------------------- word of the day parsing
-
   try {
     await page.goto('https://translate.yandex.ru/', {
       waitUntil: ['networkidle0', 'domcontentloaded'],
@@ -90,4 +88,4 @@ export const getWods = async () => {
   browser.close();
 
   return wods;
-};
+}

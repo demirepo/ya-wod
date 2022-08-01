@@ -1,6 +1,6 @@
 import { schedule } from 'node-cron';
 import { getWods } from './services/getWods.js';
-import pgdb from './services/postgres.js';
+import pgdb from './model/postgres.js';
 import { cronjob as CRON_JOB } from './constants/cron.js';
 
 import express from 'express';
@@ -10,10 +10,10 @@ import dotenv from 'dotenv';
 process.stdout.write('\x1Bc'); // clear screen
 
 //------------------------------------------------------------------ server
-dotenv.config();
+
+dotenv.config({ path: '../.env' });
 
 const PORT = process.env.APP_PORT || 5000;
-
 const app = express();
 
 app.use(express.json());
@@ -21,7 +21,7 @@ app.use('/api', wodsRouter);
 
 //----------------------------------------------------------------- wods2db
 
-const wods2db = async () => {
+async function wods2db() {
   let wods;
 
   try {
@@ -43,11 +43,11 @@ const wods2db = async () => {
   } catch (error) {
     console.log('Ошибка записи в БД', error);
   }
-};
+}
 
 //------------------------------------------------------------------ init
 
-const init = () => {
+function init() {
   schedule(CRON_JOB, wods2db);
   console.log(
     "Started watching Yandex translator's wod on schedule: ",
@@ -61,6 +61,6 @@ const init = () => {
   } catch (error) {
     console.log('Ошибка запуска сервера', error);
   }
-};
+}
 
 init();

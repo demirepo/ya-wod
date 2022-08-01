@@ -1,4 +1,4 @@
-import pgdb from '../services/postgres.js';
+import pgdb from '../model/postgres.js';
 import { Request, Response } from 'express';
 
 class WodsController {

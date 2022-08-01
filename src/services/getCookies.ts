@@ -2,10 +2,12 @@ import Puppeteer from 'puppeteer';
 import { saveCookies } from './saveCookies.js';
 import chalk from 'chalk';
 
-export const getCookies = async () => {
+export async function getCookies() {
+  console.log('Обновляю куки...');
   const browser = await Puppeteer.launch({
     // headless: false,
     ignoreHTTPSErrors: true,
+    executablePath: '/snap/bin/chromium',
     // args: ['--start-maximized', '--window-size=1920x1080'],
   });
   const page = await browser.newPage();
@@ -19,8 +21,9 @@ export const getCookies = async () => {
       waitUntil: ['networkidle0', 'domcontentloaded'],
     });
     await saveCookies(page, 'cookies.json');
+    console.log('Куки перезаписаны');
   } catch (error) {
     console.log(chalk.whiteBright.bgRed('Ошибка при обновлении кук:\n'), error);
   }
   browser.close();
-};
+}
