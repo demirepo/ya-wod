@@ -7,7 +7,7 @@ export async function getCookies() {
   const browser = await Puppeteer.launch({
     // headless: false,
     ignoreHTTPSErrors: true,
-    executablePath: '/snap/bin/chromium',
+    // executablePath: '/snap/bin/chromium',
     // args: ['--start-maximized', '--window-size=1920x1080'],
   });
   const page = await browser.newPage();
