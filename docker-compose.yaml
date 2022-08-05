@@ -1,0 +1,21 @@
+version: '3.3'
+
+volumes:
+  pg_volume:
+
+services:
+  yawod: # название контейнера
+    build: ./ #путь к папке с докерфайлом в корне, меняем на image если тянем образы с docker hub
+    restart: always
+    ports:
+      - 10000:5555
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    ports:
+      - 9999:5432
+    volumes:
+      - pg_volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=123
