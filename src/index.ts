@@ -4,6 +4,7 @@ import pgdb from './model/postgres.js';
 import { cronjob as CRON_JOB } from './constants/cron.js';
 
 import express from 'express';
+import cors from 'cors';
 import wodsRouter from './routes/wods.router.js';
 import dotenv from 'dotenv';
 
@@ -16,6 +17,7 @@ dotenv.config({ path: '../.env' });
 const PORT = process.env.APP_PORT || 5000;
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use('/api', wodsRouter);
 

@@ -1,8 +1,8 @@
 import pgdb from '../model/postgres.js';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 class WodsController {
-  async getAll(req: Request, res: Response) {
+  async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const word = await pgdb.query('SELECT * FROM wods');
       if (word.rows) {

@@ -23,6 +23,8 @@
     "delay": 2500
   },
   "dependencies": {
+    "@types/cors": "^2.8.12",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "node-cron": "^3.0.1",
@@ -36,6 +38,7 @@
     "@types/node-cron": "^3.0.2",
     "@types/pg": "^8.6.5",
     "@types/pg-pool": "^2.0.3",
+    "@types/puppeteer-core": "^5.4.0",
     "chalk": "^5.0.1",
     "concurrently": "^7.2.2",
     "editorconfig-checker": "^4.0.2",
