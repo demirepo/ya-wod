@@ -4,13 +4,12 @@ import { saveCookies } from './saveCookies.js';
 import { getCookies } from './getCookies.js';
 import { getIdiomDefinition } from './getIdiomDef.js';
 import { logRedError } from '../utils/logRedError.js';
+// @ts-ignore
+import puppeteerOptions from './puppeteerOptions.js';
 
 export async function getWods() {
   //-------------------------------------------------------- initialization
-  const browser = await Puppeteer.launch({
-    ignoreHTTPSErrors: true,
-    executablePath: '/snap/bin/chromium',
-  });
+  const browser = await Puppeteer.launch(puppeteerOptions);
   const page = await browser.newPage();
   page.setViewport({ width: 1368, height: 1080 });
   page.setUserAgent(
