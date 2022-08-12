@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 
-if (process.platform === 'win32') dotenv.config();
-if (process.platform === 'linux') dotenv.config({ path: '../../.env' });
+dotenv.config();
 
 const winExecPath = 'C:\\Program Files\\chrome-win\\chrome.exe';
 const linuxExecPath = '/snap/bin/chromium';
