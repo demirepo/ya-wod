@@ -21,8 +21,6 @@ switch (process.platform) {
     };
 
     if (process.env.PUP_VISIBLE) {
-      console.log('выполняется слияние');
-
       puppeteerOptions = {
         ...puppeteerOptions,
         ...withHead,
@@ -40,7 +38,5 @@ switch (process.platform) {
   default:
     break;
 }
-
-console.log('puppeteerOptions:', puppeteerOptions);
 
 export default puppeteerOptions;

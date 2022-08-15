@@ -5,6 +5,7 @@ import puppeteerOptions from './puppeteerOptions.js';
 
 export async function getCookies() {
   console.log('Обновляю куки...');
+
   const browser = await Puppeteer.launch(puppeteerOptions);
   const page = await browser.newPage();
 

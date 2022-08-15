@@ -9,8 +9,6 @@ import wodsRouter from './routes/wods.router.js';
 import dotenv from 'dotenv';
 // @ts-ignore
 import { getCookies } from './../build/services/getCookies.js';
-// @ts-ignore
-import puppeteerOptions from './../build/services/puppeteerOptions.js';
 
 // process.stdout.write('\x1Bc'); // clear screen
 
@@ -69,4 +67,3 @@ function init() {
 }
 
 init();
-getCookies();
