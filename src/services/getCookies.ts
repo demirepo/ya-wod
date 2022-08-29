@@ -21,6 +21,7 @@ export async function getCookies() {
     await page.goto('https://yandex.ru/', {
       waitUntil: ['networkidle0', 'domcontentloaded'],
     });
+    console.log('Сохраняю куки...');
     await saveCookies(page, 'cookies.json');
     console.log('Куки перезаписаны');
   } catch (error) {
