@@ -16,6 +16,8 @@ import { getCookies } from './../build/services/getCookies.js';
 
 dotenv.config({ path: '../.env' });
 const PORT = process.env.APP_PORT || 5000;
+const shouldUpdateCookies = process.env.UPDATE_COOKIE;
+const shouldGetWod = process.env.GET_WOD;
 
 const app = express();
 app.use(cors());
@@ -67,3 +69,6 @@ function init() {
 }
 
 init();
+
+if (shouldUpdateCookies) getCookies();
+if (shouldGetWod) wods2db();

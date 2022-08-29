@@ -33,5 +33,5 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
-      - run: pm2 restart yawod --time --watch --ignore-watch="assets" --name yawod
+      - run: pm2 restart yawod --time --name yawod
         continue-on-error: true
